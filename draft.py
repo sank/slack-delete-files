@@ -3,13 +3,15 @@ import datetime
 import time
 import calendar
 
+
 def date_to_unixtime(dt):
     """
     Convert python datetime to Unix timestamp
     :param dt: python datetime
     :return: Unix time
     """
-    return int(calendar.timegm(d.timetuple()))
+    return int(calendar.timegm(dt.timetuple()))
+
 
 # Create slack token at https://api.slack.com/custom-integrations/legacy-tokens
 SLACK_TOKEN = 'xoxp-***********-**********-***********-*****************************'
@@ -35,5 +37,6 @@ for i in range(last_page):
                 print('Error: %s' % r.text)
                 break
         print('page %s ok' % (i+1))
+    # TODO: On last iteration do not need to do this:
     time.sleep(60)
 
