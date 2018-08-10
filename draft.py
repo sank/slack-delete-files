@@ -11,7 +11,7 @@ def date_to_unixtime(dt):
     """
     return calendar.timegm(d.timetuple())
 
-token='xoxp-16568988338-17559283952-414933461047-2b21fb33c6df09d614f00024d9d73f76'
+token='xoxp-***********-**********-***********-*****************************'
 url = 'https://slack.com/api/files.list'
 url_del = 'https://slack.com/api/files.delete'
 dt = int(date_to_unixtime(datetime.datetime(2018, 7, 3, 16, 23, 29)) / 1000000)
