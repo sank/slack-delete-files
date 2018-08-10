@@ -9,24 +9,28 @@ def date_to_unixtime(dt):
     :param dt: python datetime
     :return: Unix time
     """
-    return calendar.timegm(d.timetuple())
+    return int(calendar.timegm(d.timetuple()))
 
-token='xoxp-***********-**********-***********-*****************************'
+# Create slack token at https://api.slack.com/custom-integrations/legacy-tokens
+SLACK_TOKEN = 'xoxp-***********-**********-***********-*****************************'
+# Specify until which date to delete the goods
+DATE_TO = datetime.datetime(2018, 7, 3, 16, 23, 29)
+
+date_to = date_to_unixtime(DATE_TO)
 url = 'https://slack.com/api/files.list'
 url_del = 'https://slack.com/api/files.delete'
-dt = int(date_to_unixtime(datetime.datetime(2018, 7, 3, 16, 23, 29)) / 1000000)
-r = requests.get(url, params={'token': token, 'ts_to': dt})
+r = requests.get(url, params={'token': SLACK_TOKEN, 'ts_to': date_to})
 last_page = r.json()['paging']['pages']
 
 for i in range(last_page):
-    r = requests.get(url, params={'token': token, 'page': i+1, 'ts_to': dt})
+    r = requests.get(url, params={'token': SLACK_TOKEN, 'page': i+1, 'ts_to': date_to})
     if r.status_code != 200:
         print('Error: %s' % r.text)
         break
     else:
         f = r.json()
         for f in f['files']:
-            r = requests.post(url_del, params={'token': token, 'file': f['id']})
+            r = requests.post(url_del, params={'token': SLACK_TOKEN, 'file': f['id']})
             if r.status_code != 200:
                 print('Error: %s' % r.text)
                 break
